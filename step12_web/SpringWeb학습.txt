@@ -1,0 +1,88 @@
+Spring
+
+1. tomcat과 같은 WAS, 즉 servlet engine 필수
+2. Spring Framework
+	- server 세팅을 개발자 및 인프라 운영자가 직접 함
+	- 기존 정통 웹 개발 eclipse 구조에서 library만 추가
+		servlet, jsp 위치 등은 다 동일
+3. SpringBoot
+	- 기본적으로 tomcat 내장되어 있음
+	- 단, 다른 서버 설정도 가능
+	- web 개발 기능을 sts에서 html/css/js만 지원 
+		: 파일 생성은 미지원
+		: 마켓플레이스에서 "web developer" 플러그인 설치 필요
+	- html/css/js, 이미지: 정적 파일
+		: src/main/resources/static/*.html, *.css, *.js
+	- jsp: 동적 파일
+		: webapp/*.jsp - 일반 web jsp 개발 경로 
+		: webapp/WEB-INF/*.jsp 
+			- ✅ spring만 실행 가능한 구조
+			- 보안을 고려한 특수 설정이었음
+	- 참고
+		실제 모든 web app server에서 실행되는 표준 스펙 구조
+		- 제시자: 최초 servlet & jsp 개발자들
+			모든 WAS 실행 구조는 동일
+		context명/WEB-INF/classes
+						/lib
+				/*.html
+				/*.jsp
+				/*.css & *.js
+	
+4. SpringBoot에서 jsp 개발 시
+	- controller는 내부적으로 servlet으로 변환되어 구동
+	- 연관된 어노테이션
+		@RestController
+		@Controller
+	- jsp 개발 위치
+		src/main/webapp 폴더 직접 생성
+		src/main/webapp/WEB-INF 폴더 직접 생성
+		* application.properties: 설정파일에 jsp 실행 위치 꼭 등록
+		* library 설정 파일
+			pom.xml & build.gradle에 jsp 실행 가능한 library 세팅 필수 
+			
+5. 개발 구조
+- build.gradle에 jsp와 jstl 사용 설정 필요
+	* 의존 library들의 버전 매핑 방법
+	- 권장: 설정 파일 상단에 메인 library들 버전 설정 후 추가 library들은 이름만 설정해서 버전 호환
+
+	// JSP 렌더링 엔진 (Spring Boot가 버전을 관리하도록 버전 생략 권장)
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+    // JSTL (Jakarta EE 9/10 규격)
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api' // 인터페이스
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'           // 구현체
+    
+6. 실행 test
+	1. main 메소드를 보유한 클래스로 SpringBoot App 실행
+	2. 브라우저에서 http://localhost/index.html 접속
+	3. postman
+
+7. 코드 이해하기
+- @RestController
+	: 요청 로직에 부합되는 이름 방식의 매핑
+	: 정보 저장 - put or post
+	: 정보 검색(요청) - get
+	...
+	: @GetMapping
+	: @PostMapping
+	: 응답 구조
+		- jsp 등 없어도 문자열로 직접 응답
+		- 바로 JSON 포맷으로 응답
+
+8. 주요 Spring API
+- 1. ModelAndView
+	Model - domain 또는 데이터 
+	View - 화면, 출력, presentation
+	두 기능을 보유한 spring의 주요 API
+	jsp에게 이동하여 출력 위임
+	
+	application.properties 파일 필수 설정
+	- jsp 파일 위치 등록 필수 !!!
+	- 설정 전 선행 작업: library 추가 세팅
+		# JSP 파일 경로 설정
+		spring.mvc.view.prefix=/WEB-INF/views/
+		spring.mvc.view.suffix=.jsp
+		
+		/WEB-INF/views/*.jsp
+		
+		

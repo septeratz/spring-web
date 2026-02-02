@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: step01_basic
+server:
+  port: 81
+  servlet:
+    context-path: /ce
