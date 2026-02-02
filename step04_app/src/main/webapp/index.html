@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
+</head>
+<body>
+
+    <h1>회사 관리 시스템</h1>
+    <hr>
+
+    <h3>[ 로그인 ]</h3>
+    <form action="/login" method="post">
+        사원명(ENAME): <input type="text" name="ename" required placeholder="예: SMITH">
+        <button type="submit">로그인</button>
+    </form>
+
+    <br><br>
+    <hr>
+
+    <h3>[ 메뉴 ]</h3>
+    <ul>
+        <li>
+            <a href="/dept/list">모든 부서 정보 보기 (로그인 필요)</a>
+        </li>
+        <li>
+            <a href="/logout">로그아웃</a>
+        </li>
+    </ul>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('error') === 'fail') {
+            alert("로그인 실패! 존재하는 사원 이름을 입력하세요.");
+        } else if (params.get('error') === 'login_required') {
+            alert("먼저 로그인을 해주세요.");
+        }
+    </script>
+
+</body>
+</html>

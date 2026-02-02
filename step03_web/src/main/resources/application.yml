@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: step03_web
+  mvc:
+    view:
+      prefix: /WEB-INF/fisaview/
+      suffix: .jsp
+server:
+  servlet:
+    context-path: /fisa
+  port: 81
